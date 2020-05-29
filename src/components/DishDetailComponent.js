@@ -19,8 +19,7 @@ class CommentForm extends Component {
         
     }
     handleComment(values){
-        console.log("Current state is : " + JSON.stringify(values));
-        alert("Current state is : " + JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.name, values.comment);
     }
     toggleModal(){
         this.setState({
@@ -93,7 +92,7 @@ class CommentForm extends Component {
 
 
 
-function RenderComments({comments}){
+function RenderComments({comments,addComment,dishId}){
     if(comments==null){
         return(
             <div></div>
@@ -150,7 +149,7 @@ const DishDetail = (props)=>{
                         <ul className="list-unstyled">
                             <RenderComments comments={props.comments} />
                         </ul>
-                        <CommentForm />
+                        <CommentForm dishId={props.dish.id} addComment={props.addComment}/>
                     </div>
                 </div>
                 </div>
