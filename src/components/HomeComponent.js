@@ -14,26 +14,27 @@ function RenderCard({item, isLoading, errMess}) {
   else if (errMess) {
       return(
               <React.Fragment>
-                <h4>{errMess.toString()}</h4>
+                <h4>{errMess}</h4>
               </React.Fragment>
       );
   }
-  else 
-      return(
-        <FadeTransform in 
-          transformProps = {{
-            exitTransform : 'scale(0.5) transformY(-50%)'
-          }}>
-          <Card>
-              <CardImg src={baseUrl + item.image} alt={item.name} />
-              <CardBody>
-              <CardTitle>{item.name}</CardTitle>
-              {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null }
-              <CardText>{item.description}</CardText>
-              </CardBody>
-          </Card>
-        </FadeTransform>
-      );
+  else{
+    return(
+      <FadeTransform in 
+        transformProps = {{
+          exitTransform : 'scale(0.5) transform(-50%)'
+        }}>
+        <Card>
+            <CardImg src={baseUrl + item.image} alt={item.name} />
+            <CardBody>
+            <CardTitle>{item.name}</CardTitle>
+            {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null }
+            <CardText>{item.description}</CardText>
+            </CardBody>
+        </Card>
+      </FadeTransform>
+    );
+  }
 
 }
 
@@ -52,7 +53,9 @@ function Home(props) {
               errMess = {props.promosErrMess}/>
           </div>
           <div className="col-12 col-md m-1">
-            <RenderCard item={props.leader} />
+            <RenderCard item={props.leader} 
+            isLoading={props.leadersLoading}
+            errMess={props.leadersErrMess}/>
           </div>
         </div>
       </div>
