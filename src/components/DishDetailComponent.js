@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {LocalForm , Control, Errors } from 'react-redux-form';
 import {Loading} from './LoadingComponent'; 
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required  = val => val && val.length;
 const maxLength = len => val => !(val) || (val.length<=len);
@@ -99,25 +100,29 @@ function RenderComments({comments,postComment,dishId}){
             <div></div>
         );
     }else{
-        const dishComments = comments.map((comment)=>{
-            return(
-                <li key ={comment.id} className="comments pb-4">
-                    <div className="pb-2">{comment.comment}</div>
-                    <div>
-                        --{comment.author}, { new Intl.DateTimeFormat('en-US',{year : 'numeric' , month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.date)))}
-                    </div>
-                </li>
-            );
-        });
-        return (
-            <div>
-                {dishComments}
-            </div>
-        );   
+        return(
+            <Stagger in>
+                {comments.map((comment) => {
+                    return (
+                        <Fade in>
+                        <li key={comment.id}>
+                        <p>{comment.comment}</p>
+                        <p>-- {comment.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                        </li>
+                        </Fade>
+                    );
+                })}
+            </Stagger>
+        );
     }
 }
 function RenderDishDetail({dish}){
     return (
+        <FadeTransform
+            in
+            transformProps={{
+                exitTransform: 'scale(0.5) translateY(-50%)'
+            }}>
         <Card>
             <CardImg top src={baseUrl + dish.image} alt={dish.name} />
             <CardBody>
@@ -125,7 +130,8 @@ function RenderDishDetail({dish}){
                 <CardText>{dish.description}</CardText>
             </CardBody>
         </Card>
-    );
+        </FadeTransform>
+);
 }
 const DishDetail = (props)=>{
         if(props.isLoading){
