@@ -20,7 +20,7 @@ class CommentForm extends Component {
         
     }
     handleComment(values){
-        this.props.addComment(this.props.dishId, values.rating, values.name, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.name, values.comment);
     }
     toggleModal(){
         this.setState({
@@ -35,7 +35,7 @@ class CommentForm extends Component {
             <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                 <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
                 <ModalBody>
-                <LocalForm onSubmit={(values) => this.handleComment(values)}>
+                <LocalForm onSubmit={(values) => this.props.postComment(this.props.dishId, values.rating, values.name, values.comment)}>
                             <div className="form-group">
                                 <Label htmlFor="rating">Rating </Label>
                                 <Control.select model=".rating" name="rating"
@@ -45,7 +45,7 @@ class CommentForm extends Component {
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>
-                                        <option>5</option>
+                                        <option selected >5</option>
                                 </Control.select>
                             </div>
                             <div className="form-group">
@@ -93,7 +93,7 @@ class CommentForm extends Component {
 
 
 
-function RenderComments({comments,addComment,dishId}){
+function RenderComments({comments,postComment,dishId}){
     if(comments==null){
         return(
             <div></div>
@@ -168,7 +168,7 @@ const DishDetail = (props)=>{
                         <ul className="list-unstyled">
                             <RenderComments comments={props.comments} />
                         </ul>
-                        <CommentForm dishId={props.dish.id} addComment={props.addComment}/>
+                        <CommentForm dishId={props.dish.id} postComment={props.postComment}/>
                     </div>
                 </div>
                 </div>
